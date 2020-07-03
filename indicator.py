@@ -13,6 +13,7 @@ import socket
 APPINDICATOR_ID = 'Pasaiako Udala'
 
 def main():
+    # indicator = appindicator.Indicator.new(APPINDICATOR_ID, 'kaixooooooooo' ), appindicator.IndicatorCategory.SYSTEM_SERVICES)
     indicator = appindicator.Indicator.new(APPINDICATOR_ID, os.path.abspath('asset/pasaia_logo.svg'), appindicator.IndicatorCategory.SYSTEM_SERVICES)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
     indicator.set_menu(build_menu())
@@ -24,9 +25,15 @@ def build_menu():
     item_joke = gtk.MenuItem('Joke')
     item_joke.connect('activate', joke)
     menu.append(item_joke)
-    item_joke3 = gtk.MenuItem('IP helbidea')
-    item_joke3.connect('activate', joke3)
-    menu.append(item_joke3)
+
+    item_get_ip = gtk.MenuItem('IP helbidea')
+    item_get_ip.connect('activate', get_ip)
+    menu.append(item_get_ip)
+
+    item_vnc = gtk.MenuItem('Egin eskaria ordenagilua kontrolatzeko')
+    item_vnc.connect('activate', notify_vnc)
+    menu.append(item_vnc)
+
     item_quit = gtk.MenuItem('Quit')
     item_quit.connect('activate', quit)
     menu.append(item_quit)
@@ -52,8 +59,11 @@ def fetch_ip():
 def joke(_):
     notify.Notification.new("Joke", fetch_joke() , None).show()
 
-def joke3(_):
+def get_ip(_):
     notify.Notification.new("IP", fetch_ip(), None).show()
+
+def notify_vnc(_):
+    notify.Notification.new("VNC", 'Aukera honetan VNC eskaera', None).show()
 
 def quit(_):
     notify.uninit()
