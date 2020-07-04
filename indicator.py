@@ -1,23 +1,33 @@
-from gi.repository import Gtk as gtk
-from gi.repository import AppIndicator3 as appindicator
-
+import json
 import os
 import signal
-import json
 import urllib3
-from gi.repository import Notify as notify
-from urllib.request import urlopen
 import requests
 import socket
 
+from gi.repository import AppIndicator3 as appindicator
+from gi.repository import GLib as glib
+from gi.repository import Gtk as gtk
+from gi.repository import Notify as notify
+
+from urllib.request import urlopen
+
 APPINDICATOR_ID = 'Pasaiako Udala'
+ind = None
 
 def main():
-    # indicator = appindicator.Indicator.new(APPINDICATOR_ID, 'kaixooooooooo' ), appindicator.IndicatorCategory.SYSTEM_SERVICES)
-    indicator = appindicator.Indicator.new(APPINDICATOR_ID, os.path.abspath('asset/pasaia_logo.svg'), appindicator.IndicatorCategory.SYSTEM_SERVICES)
-    indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-    indicator.set_menu(build_menu())
+    # indicator = appindicator.Indicator.new(APPINDICATOR_ID, os.path.abspath('asset/pasaia_logo.svg'), appindicator.IndicatorCategory.SYSTEM_SERVICES)
+    # indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+    # indicator.set_menu(build_menu())
+    ind = appindicator.Indicator.new("example-simple-client",os.path.abspath('asset/pasaia_logo.svg'),appindicator.IndicatorCategory.APPLICATION_STATUS)
+    ind.set_status (appindicator.IndicatorStatus.ACTIVE)
+    ind.set_label('NA', '')
+    ind.set_label('kokokokokokok' , '')
+    ind.set_icon_full(os.path.abspath('asset/pasaia_logo.svg'), 'Play')
+    ind.set_menu(build_menu())
     notify.init(APPINDICATOR_ID)
+    update(ind)
+    # glib.timeout_add_seconds( 3, update(ind))
     gtk.main()
 
 def build_menu():
@@ -30,7 +40,7 @@ def build_menu():
     item_get_ip.connect('activate', get_ip)
     menu.append(item_get_ip)
 
-    item_vnc = gtk.MenuItem('Egin eskaria ordenagilua kontrolatzeko')
+    item_vnc = gtk.MenuItem('VNC Eskaera')
     item_vnc.connect('activate', notify_vnc)
     menu.append(item_vnc)
 
@@ -42,6 +52,7 @@ def build_menu():
 
 def fetch_joke():
     response2 = requests.get('http://api.icndb.com/jokes/random?limitTo=[nerdy]')
+
     return json.loads(response2.content.decode('utf-8'))['value']['joke']
 
 def fetch_ip():
@@ -69,6 +80,26 @@ def quit(_):
     notify.uninit()
     gtk.main_quit() 
 
+def update_ind_label():
+    value = glib.timeout_add_seconds(5, handler_timeout)
+
+def update(ind):
+        ind.set_label("LPLPLPLP","")
+
+        #        self.indicator.set_label( "static label", "" ) # Using a static label, the icon does not change unless clicked with the mouse.
+        # self.indicator.set_label( str( self.count ), "" ) # Using a dynamic label (which does not repeat) DOES change the icon.
+
+        # self.count += 1
+
+        return True
+
+
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal.SIG_DFL)
+    # main()
+    try:
+        thread.start_new_thread(update_ind_label, ())
+    except:
+        print ("Error: unable to start thread")
+
     main()
