@@ -24,7 +24,10 @@ APPINDICATOR_ID = 'Pasaiako Udala'
 class Indicator():
     def __init__(self):
         self.app = APPINDICATOR_ID
-        iconpath = os.path.abspath('asset/pasaia_logo32.png')
+        dirname = os.path.abspath(os.path.dirname(__file__))
+        #iconpath = os.path.abspath('./asset/pasaia_logo32.png')
+        iconpath = os.path.join(dirname,'asset/pasaia_logo32.png')
+        print(iconpath)
         self.indicator = AppIndicator3.Indicator.new(self.app, iconpath, AppIndicator3.IndicatorCategory.OTHER)
         self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.create_menu())
