@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Pasaia-indicator
+Comment=Pasaia indicator
+Exec=python3 /home/administrador/dev/python/pasaia-indicator/indicator.py
+Terminal=false
+Type=Application
+Categories=
+
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=3
