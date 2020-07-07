@@ -15,6 +15,10 @@ Ordenagailua abiaraztean exekutatu dadin:
     nohup python3 /path/to/pasaia-indicator.py &
 
 
+Requirements
+
+    sudo apt install gir1.2-appindicator3-0.1
+
 
 Credits:
 
